@@ -13,12 +13,16 @@
 	</div>
 	<div id="player">
 		<p>Points: </p><p id="score">000</p>
+		<br>
+		<br>
+		<p id="level">Level 1</p>
 	</div>
 	<script type="text/javascript">
+		var pointCount = 000
 		var position = { x: 4, y:4 };
 		var pacMan = { x: 4, y:4 };
 		var ghost = { x:6, y:2 }
-		var map = 	[
+		var plan1 = 	[
 						[0,0,0,0,0,0,0,0,0,0],
 						[0,1,1,0,1,1,1,1,1,0],
 						[0,0,1,0,0,0,4,0,0,0],
@@ -31,7 +35,36 @@
 						[0,0,0,0,0,0,0,0,0,0]
 					];
 		
+		
+		var plan2 =	[
+						[0,0,0,0,0,0,0,0,0,0],
+						[0,1,1,1,1,1,1,1,1,0],
+						[0,1,0,0,0,0,4,0,0,0],
+						[0,1,1,1,1,0,1,1,1,0],
+						[0,1,0,0,3,1,1,0,1,0],
+						[0,1,0,1,1,1,0,0,1,0],
+						[0,1,0,1,1,1,1,1,1,0],
+						[0,1,0,1,0,0,0,0,1,0],
+						[0,1,0,1,1,1,1,1,1,0],
+						[0,0,0,0,0,0,0,0,0,0]
+					];	
+
+
+
+
 		function drawWorld(){
+			if (pointCount<2500) {
+				map = plan1;
+			}
+			else {
+				map = plan2;
+			}
+			if (pointCount===2500) {
+				position = { x: 4, y:4 };
+				pacMan = { x: 4, y:4 };
+				ghostPosition = { x:6, y:2 }
+				ghost = { x:6, y:2 }
+			}
 			$("#world").html("");
 			for(var y = 0; y < map.length; y++){
 				// console.log(map[y]);
@@ -52,7 +85,7 @@
 			}
 		}
 		drawWorld();
-		var pointCount = 000
+		
 		
 		function ghostMoves() {
 			var ghostDirection = Math.floor((Math.random() *4) +1);
@@ -104,13 +137,13 @@
 		}
 
 		function nextLevel() {
-			if (score === 4600) {
-			$("#world").fadeOut();
+			if (pointCount === 2500) {
+				$("#level").text("Level 2");
 			}
 		}
 
 		$(document).on("keydown", "html", function(e){
-			
+
 			var newPosition = map[pacMan.y][pacMan.x];
 			
 
@@ -169,7 +202,7 @@
 					$("img.pacman").attr("src","img/pacman_down.png")
 				}
 			}
-
+			nextLevel();
 
 		})
 
