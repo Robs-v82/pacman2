@@ -6,10 +6,10 @@
 	<script type="text/javascript" src="jquery.js"></script>
 </head>
 <body>
-	<div id="world">
-		
-		
-			
+	<div id="world">	
+	</div>
+	<div id="over">
+		<h1>GAME OVER</h1>
 	</div>
 	<div id="player">
 		<p>Points: </p><p id="score">000</p>
@@ -17,10 +17,11 @@
 	<script type="text/javascript">
 		var position = { x: 4, y:4 };
 		var pacMan = { x: 4, y:4 };
+		var ghost = { x:6, y:2 }
 		var map = 	[
 						[0,0,0,0,0,0,0,0,0,0],
 						[0,1,1,0,1,1,1,1,1,0],
-						[0,0,1,0,0,0,1,0,0,0],
+						[0,0,1,0,0,0,4,0,0,0],
 						[0,1,1,1,1,1,1,1,1,0],
 						[0,1,0,0,3,1,1,1,1,0],
 						[0,1,1,1,1,1,0,1,1,0],
@@ -44,6 +45,8 @@
 						$("#world").append("<div class='ground'></div>");
 					} else if (map[y][x] === 3) {
 						$("#world").append("<img class='pacman' src='img/pacman.png'>");
+					} else if (map[y][x] === 4) {
+						$("#world").append("<img class='ghost' src='img/red_ghost.png'>");
 					}
 				}
 			}
@@ -51,11 +54,60 @@
 		drawWorld();
 		var pointCount = 000
 		
+		function ghostMoves() {
+			var ghostDirection = Math.floor((Math.random() *4) +1);
+			var ghostPosition = [ghost.y][ghost.x];
+			if (ghostDirection === 1) {
+				ghostPosition = map[ghost.y][ghost.x-1];
+			}
+			else if (ghostDirection === 2){ // Left
+				ghostPosition = map[ghost.y][ghost.x+1];
+			}
+			else if (ghostDirection === 3){ // Left
+				ghostPosition = map[ghost.y-1][ghost.x];
+			}
+			else if (ghostDirection === 4){ // Left
+				ghostPosition = map[ghost.y+1][ghost.x];
+			} 
+			if (ghostPosition !=0) {
+				if (ghostDirection === 1){
+					map[ghost.y][ghost.x] = 1;
+					ghost.x = ghost.x-1;
+					map[ghost.y][ghost.x] = 4;	
+				}
+				else if (ghostDirection === 2){
+					map[ghost.y][ghost.x] = 1;
+					ghost.x = ghost.x+1;
+					map[ghost.y][ghost.x] = 4;	
+				}
+				else if (ghostDirection === 3){
+					map[ghost.y][ghost.x] = 1;
+					ghost.y = ghost.y-1;
+					map[ghost.y][ghost.x] = 4;	
+				}
+				else if (ghostDirection === 4){
+					map[ghost.y][ghost.x] = 1;
+					ghost.y = ghost.y+1;
+					map[ghost.y][ghost.x] = 4;	
+				} 
+			} 
+		}
+
 		function addPoints() {
 			pointCount = pointCount + 100;
-			$("#score").text(pointCount);
-			 	
+			$("#score").text(pointCount);	 	
 		} 
+
+		function gameOver() {
+			$("#world").fadeOut();
+			$("#over").fadeIn();
+		}
+
+		function nextLevel() {
+			if (score === 4600) {
+			$("#world").fadeOut();
+			}
+		}
 
 		$(document).on("keydown", "html", function(e){
 			
@@ -79,11 +131,16 @@
 				addPoints();
 			}
 
+			if (newPosition ===4) {
+				gameOver();
+			}
+
 			if (newPosition !=0) {
 				if (e.keyCode === 37){ // Left
 					map[pacMan.y][pacMan.x] = 2;
 					pacMan.x = pacMan.x -1; 
 					map[pacMan.y][pacMan.x] = 3;
+					ghostMoves();
 					drawWorld();
 					$("img.pacman").attr("src","img/pacman_left.png")
 				} 
@@ -91,6 +148,7 @@
 					map[pacMan.y][pacMan.x] = 2;
 					pacMan.x = pacMan.x +1; 
 					map[pacMan.y][pacMan.x] = 3;
+					ghostMoves();
 					drawWorld();
 					
 				}
@@ -98,6 +156,7 @@
 					map[pacMan.y][pacMan.x] = 2;
 					pacMan.y = pacMan.y -1; 
 					map[pacMan.y][pacMan.x] = 3;
+					ghostMoves();
 					drawWorld();
 					$("img.pacman").attr("src","img/pacman_up.png")
 				}			
@@ -105,10 +164,12 @@
 					map[pacMan.y][pacMan.x] = 2;
 					pacMan.y = pacMan.y +1; 
 					map[pacMan.y][pacMan.x] = 3;
+					ghostMoves();
 					drawWorld();
 					$("img.pacman").attr("src","img/pacman_down.png")
 				}
 			}
+
 
 		})
 

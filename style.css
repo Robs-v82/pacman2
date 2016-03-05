@@ -13,6 +13,24 @@ div#world {
 	height: 500px;
 	margin: 0 auto;
 }
+
+div#over {
+	display: none;
+	padding-top: 25px;
+	width: 480px;
+	height: 500px;
+	margin: 0 auto;
+	text-align: center;
+}
+	
+	div#over h1 {
+		display: inline-block;
+		margin: 150px 80px;
+		font-size: 5em;
+		color: red;
+		font-weight: 200;
+	}
+
 div.ground {
 	width: 50px;
 	height: 50px;
@@ -30,13 +48,14 @@ div.coin {
 	margin-top: 16px;
 }
 
-img.pacman {
+img.pacman, img.ghost {
 	width: 40px;
 	height: 40px;
 	padding: 5px;
 	background-color: black;
 	display: inline-block;
 }
+
 
 img.wall {
 	width: 50px;
