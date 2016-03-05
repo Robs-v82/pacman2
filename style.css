@@ -2,6 +2,7 @@
 	/*outline: 1px dotted red;*/
 	margin: -2px;
 	background-color: black;
+	font-family: "menlo";
 }
 html {
 	width: 100%;
@@ -43,3 +44,14 @@ img.wall {
 	background-color: black;
 	display: inline-block;
 }
+div#player {
+	padding-top: 25px;
+	width: 480px;
+	margin: 0 auto;
+}
+	div#player p {
+		display: inline-block;
+		color: white;
+		padding-right: 50px;
+		font-size: 2em;
+	}

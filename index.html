@@ -11,7 +11,11 @@
 		
 			
 	</div>
+	<div id="player">
+		<p>Points: </p><p id="score">000</p>
+	</div>
 	<script type="text/javascript">
+		var position = { x: 4, y:4 };
 		var pacMan = { x: 4, y:4 };
 		var map = 	[
 						[0,0,0,0,0,0,0,0,0,0],
@@ -45,22 +49,67 @@
 			}
 		}
 		drawWorld();
+		var pointCount = 000
+		
+		function addPoints() {
+			pointCount = pointCount + 100;
+			$("#score").text(pointCount);
+			 	
+		} 
 
 		$(document).on("keydown", "html", function(e){
-			console.log("FIRES OFF!", e);
-			if (e.keyCode === 37){ // Left
-				map[pacMan.y][pacMan.x] = 2;
-				pacMan.x = pacMan.x -1; 
-				map[pacMan.y][pacMan.x] = 3;
-				drawWorld();
-				$("img.pacman").css("transform","rotate(180deg)")
+			
+			var newPosition = map[pacMan.y][pacMan.x];
+			
 
-			} else if (e.keyCode === 39){ // Right
-				map[pacMan.y][pacMan.x] = 2;
-				pacMan.x = pacMan.x +1; 
-				map[pacMan.y][pacMan.x] = 3;
-				drawWorld();
+			if (e.keyCode === 37){ // Left
+				newPosition = map[pacMan.y][pacMan.x-1];
 			}
+			else if (e.keyCode === 39){ // Left
+				newPosition = map[pacMan.y][pacMan.x+1];
+			}
+			else if (e.keyCode === 38){ // Left
+				newPosition = map[pacMan.y-1][pacMan.x];
+			}
+			else if (e.keyCode === 40){ // Left
+				newPosition = map[pacMan.y+1][pacMan.x];
+			}
+
+			if (newPosition===1) {
+				addPoints();
+			}
+
+			if (newPosition !=0) {
+				if (e.keyCode === 37){ // Left
+					map[pacMan.y][pacMan.x] = 2;
+					pacMan.x = pacMan.x -1; 
+					map[pacMan.y][pacMan.x] = 3;
+					drawWorld();
+					$("img.pacman").attr("src","img/pacman_left.png")
+				} 
+				else if (e.keyCode === 39){ // Right
+					map[pacMan.y][pacMan.x] = 2;
+					pacMan.x = pacMan.x +1; 
+					map[pacMan.y][pacMan.x] = 3;
+					drawWorld();
+					
+				}
+				else if (e.keyCode === 38){ // Up
+					map[pacMan.y][pacMan.x] = 2;
+					pacMan.y = pacMan.y -1; 
+					map[pacMan.y][pacMan.x] = 3;
+					drawWorld();
+					$("img.pacman").attr("src","img/pacman_up.png")
+				}			
+				else if (e.keyCode === 40){ // Down
+					map[pacMan.y][pacMan.x] = 2;
+					pacMan.y = pacMan.y +1; 
+					map[pacMan.y][pacMan.x] = 3;
+					drawWorld();
+					$("img.pacman").attr("src","img/pacman_down.png")
+				}
+			}
+
 		})
 
 
